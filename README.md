@@ -1,2 +1,0 @@
-# gor_faucet
-Faucet
