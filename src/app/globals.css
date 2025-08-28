@@ -1,0 +1,305 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Webflow-inspired color scheme */
+:root {
+  --color-background: #141b0f;
+  --color-text-primary: #c6deb2;
+  --color-text-secondary: #899381;
+  --color-text-muted: #555f4c;
+  --color-accent-primary: #55de4a;
+  --color-accent-secondary: #c6deb2;
+  --color-border: #c6deb21a;
+  --color-card-background: #c6deb21a;
+}
+
+/* Font variables */
+:root {
+  --font-staatliches: 'Staatliches', Arial, sans-serif;
+  --font-ibm-plex-mono: 'IBMPlexMono', Arial, sans-serif;
+  --font-inter: 'Inter Variablefont Opsz Wght', Arial, sans-serif;
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-inter);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Typography */
+.font-staatliches {
+  font-family: var(--font-staatliches);
+}
+
+.font-ibm-plex-mono {
+  font-family: var(--font-ibm-plex-mono);
+}
+
+.font-inter {
+  font-family: var(--font-inter);
+}
+
+/* Hero section styles */
+.section-hero {
+  height: 92vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 10rem 5% 8rem;
+}
+
+.hero-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+  max-width: 86rem;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-family: var(--font-staatliches);
+  font-size: 8.75rem;
+  font-weight: 400;
+  line-height: 80%;
+  letter-spacing: -0.1rem;
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.hero-subtitle {
+  font-family: var(--font-inter);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: -0.02rem;
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-primary {
+  background-color: var(--color-accent-primary);
+  border-radius: 10000px;
+  padding: 0.75rem 1.5rem 0.875rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.button-primary:hover {
+  background-color: #4ac640;
+  transform: translateY(-2px);
+}
+
+.button-primary-text {
+  color: #0c0c0e;
+  font-family: var(--font-inter);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.02rem;
+  margin: 0;
+}
+
+.button-secondary {
+  background-color: var(--color-accent-secondary);
+  border-radius: 1000px;
+  padding: 0.75rem 1.5rem 0.875rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.button-secondary:hover {
+  background-color: #b8d4a6;
+  transform: translateY(-2px);
+}
+
+.button-secondary-text {
+  color: #0c0c0e;
+  font-family: var(--font-inter);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.02rem;
+  margin: 0;
+}
+
+/* Navbar styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(20, 27, 15, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navbar-container {
+  max-width: 86rem;
+  margin: 0 auto;
+  padding: 1rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gorb-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+}
+
+.gorb-logo {
+  height: 40px;
+  width: auto;
+}
+
+.text-button-tertiary {
+  color: var(--color-text-primary);
+  font-family: var(--font-staatliches);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  margin: 0;
+}
+
+.navbar-text-link {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-text-link:hover {
+  color: var(--color-accent-primary);
+}
+
+/* Hero image */
+.hero-image {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: auto;
+  max-width: 600px;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Navbar enhancements */
+.navbar {
+  transition: all 0.3s ease;
+}
+
+.navbar:hover {
+  background-color: rgba(20, 27, 15, 0.9);
+}
+
+/* Wallet button enhancements */
+.wallet-adapter-button {
+  background-color: var(--color-accent-secondary) !important;
+  color: #0c0c0e !important;
+  font-family: var(--font-inter) !important;
+  font-weight: 600 !important;
+  border-radius: 10000px !important;
+  padding: 0.5rem 1rem !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  font-size: 0.875rem !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.wallet-adapter-button:hover {
+  background-color: #b8d4a6 !important;
+  transform: translateY(-1px) !important;
+  color: #0c0c0e !important;
+}
+
+.wallet-adapter-button:active {
+  transform: translateY(0) !important;
+}
+
+/* Wallet dropdown menu */
+.wallet-adapter-modal-wrapper {
+  font-family: var(--font-inter) !important;
+}
+
+.wallet-adapter-modal-title {
+  color: var(--color-text-primary) !important;
+  font-family: var(--font-staatliches) !important;
+}
+
+.wallet-adapter-modal-list {
+  background-color: var(--color-background) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 0.5rem !important;
+}
+
+.wallet-adapter-modal-list-item {
+  color: var(--color-text-primary) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.wallet-adapter-modal-list-item:hover {
+  background-color: rgba(198, 222, 178, 0.1) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Connected wallet state */
+.wallet-adapter-button-trigger {
+  background-color: var(--color-accent-primary) !important;
+  color: #0c0c0e !important;
+}
+
+.wallet-adapter-button-trigger:hover {
+  background-color: #4ac640 !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+
+  .section-hero {
+    padding: 8rem 5% 4rem;
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+}
