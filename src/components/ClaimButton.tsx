@@ -22,6 +22,20 @@ export const ClaimButton: FC<ClaimButtonProps> = ({ connection, publicKey }) => 
   const [txSignature, setTxSignature] = useState<string>('')
   const [tweetUrl, setTweetUrl] = useState<string>('')
 
+  // Restore verification view if user returns from Twitter (iOS reload/rerender)
+  useEffect(() => {
+    try {
+      const persisted = window.localStorage.getItem('gor_tweet_verification_state')
+      if (persisted) {
+        const parsed = JSON.parse(persisted) as { step?: 'tweet' | 'verify'; tweetUrl?: string }
+        if (parsed.step === 'verify') {
+          setShowTwitterVerification(true)
+          if (parsed.tweetUrl) setTweetUrl(parsed.tweetUrl)
+        }
+      }
+    } catch {}
+  }, [])
+
   useEffect(() => {
     checkEligibility()
 
@@ -89,6 +103,7 @@ export const ClaimButton: FC<ClaimButtonProps> = ({ connection, publicKey }) => 
       setIsClaiming(true)
       setShowTwitterVerification(false)
       setTweetVerified(true)
+      try { window.localStorage.removeItem('gor_tweet_verification_state') } catch {}
 
       // Show verification message optimized for Gorbagana
       setVerificationMessage('🔍 Verifying transaction on Gorbagana Testnet v1...')
