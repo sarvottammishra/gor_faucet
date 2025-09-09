@@ -1,5 +1,7 @@
 // @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server'
+import { createVerificationToken, isTweetAlreadyUsed } from '@/lib/verificationStore'
+import { issueVerificationToken } from '@/lib/verificationToken'
 
 export async function POST(request: NextRequest) {
   try {
@@ -82,6 +84,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Enforce one-claim-per-tweet globally
+    if (isTweetAlreadyUsed(tweetId)) {
+      return NextResponse.json(
+        { error: 'This tweet link has already been used for a claim.' },
+        { status: 409 }
+      )
+    }
+
     // Attempt to validate tweet recency using public oEmbed (fallback-safe)
     // If metadata isn't available, we still allow success to avoid blocking users.
     const within24h = await isTweetWithinLast24Hours(tweetUrl)
@@ -95,12 +105,17 @@ export async function POST(request: NextRequest) {
     // Store the verification (in production, use a database)
     await storeVerification(walletAddress, tweetUrl, tweetId)
 
+    // Issue one-time verification token tied to this tweet and wallet
+    const tokenRecord = createVerificationToken(walletAddress, tweetId)
+    const signedToken = issueVerificationToken(walletAddress, tweetId)
+
     return NextResponse.json({
       success: true,
       message: 'Tweet verified successfully!',
       tweetId,
       walletAddress,
-      verifiedAt: new Date().toISOString()
+      verifiedAt: new Date().toISOString(),
+      verificationToken: signedToken,
     })
 
   } catch (error) {
