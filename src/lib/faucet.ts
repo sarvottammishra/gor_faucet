@@ -345,7 +345,7 @@ export async function getClaimHistory(walletAddress: string, forceRefresh = fals
 /**
  * Claim tokens for a wallet
  */
-export async function claimTokens(connection: Connection, recipientPublicKey: PublicKey): Promise<string> {
+export async function claimTokens(connection: Connection, recipientPublicKey: PublicKey, verificationToken?: string): Promise<string> {
   try {
     // First check eligibility
     const eligibility = await checkClaimEligibility(recipientPublicKey.toString())
@@ -362,6 +362,7 @@ export async function claimTokens(connection: Connection, recipientPublicKey: Pu
       body: JSON.stringify({
         recipientAddress: recipientPublicKey.toString(),
         amount: CLAIM_AMOUNT,
+        verificationToken,
       }),
     })
 
