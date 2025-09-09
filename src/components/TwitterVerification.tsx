@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 
 interface TwitterVerificationProps {
@@ -17,6 +17,25 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
   const [isVerifying, setIsVerifying] = useState(false)
   const [error, setError] = useState('')
   const [step, setStep] = useState<'tweet' | 'verify'>('tweet')
+
+  // Persist state to survive iOS return from Twitter
+  useEffect(() => {
+    try {
+      const persisted = window.localStorage.getItem('gor_tweet_verification_state')
+      if (persisted) {
+        const parsed = JSON.parse(persisted) as { step?: 'tweet' | 'verify'; tweetUrl?: string }
+        if (parsed.step) setStep(parsed.step)
+        if (parsed.tweetUrl) setTweetUrl(parsed.tweetUrl)
+      }
+    } catch {}
+  }, [])
+
+  useEffect(() => {
+    try {
+      const payload = JSON.stringify({ step, tweetUrl })
+      window.localStorage.setItem('gor_tweet_verification_state', payload)
+    } catch {}
+  }, [step, tweetUrl])
 
   // Create Twitter Web Intent URL
   const createTwitterIntent = () => {
@@ -106,6 +125,7 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
     setTweetUrl('')
     setError('')
     setIsVerifying(false)
+    try { window.localStorage.removeItem('gor_tweet_verification_state') } catch {}
   }
 
   return (
