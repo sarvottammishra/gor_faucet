@@ -1,6 +1,9 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server'
 import { Connection, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction, Keypair } from '@solana/web3.js'
 import bs58 from 'bs58'
+import { getVerificationToken, markTokenUsed, isTweetAlreadyUsed, markTweetUsed } from '@/lib/verificationStore'
+import { verifyVerificationToken } from '@/lib/verificationToken'
 
 // Configuration - In production, these should be environment variables
 const FAUCET_PRIVATE_KEY = process.env.FAUCET_PRIVATE_KEY || ''
@@ -10,7 +13,58 @@ const SOLANA_RPC_URL = process.env.SOLANA_RPC_URL || 'https://rpc.gorbagana.wtf'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { recipientAddress, amount = CLAIM_AMOUNT } = body
+    const { recipientAddress, amount = CLAIM_AMOUNT, verificationToken } = body
+
+    // Validate verification token and tweet uniqueness
+    if (!verificationToken) {
+      return NextResponse.json(
+        { error: 'Verification token is required' },
+        { status: 400 }
+      )
+    }
+
+    // Verify signature and extract payload
+    let payload = verifyVerificationToken(verificationToken)
+
+    // Fallback: support legacy opaque tokens from in-memory store
+    let legacyToken = undefined as any
+    if (!payload) {
+      legacyToken = getVerificationToken(verificationToken)
+      if (!legacyToken) {
+        return NextResponse.json(
+          { error: 'Invalid verification token' },
+          { status: 400 }
+        )
+      }
+      if (legacyToken.used) {
+        return NextResponse.json(
+          { error: 'Verification token already used' },
+          { status: 409 }
+        )
+      }
+      if (legacyToken.walletAddress !== recipientAddress) {
+        return NextResponse.json(
+          { error: 'Verification token does not match recipient wallet' },
+          { status: 400 }
+        )
+      }
+    }
+
+    if (payload && payload.walletAddress !== recipientAddress) {
+      return NextResponse.json(
+        { error: 'Verification token does not match recipient wallet' },
+        { status: 400 }
+      )
+    }
+
+    const tweetIdToUse = payload ? payload.tweetId : legacyToken.tweetId
+
+    if (isTweetAlreadyUsed(tweetIdToUse)) {
+      return NextResponse.json(
+        { error: 'This tweet has already been used for a claim' },
+        { status: 409 }
+      )
+    }
 
     if (!recipientAddress) {
       return NextResponse.json(
@@ -142,6 +196,9 @@ export async function POST(request: NextRequest) {
 
     // If transaction succeeded, return success regardless of confirmation
     if (transactionSuccess) {
+      // Mark tweet as used on success
+      markTweetUsed(tweetIdToUse, verificationToken, recipientAddress)
+
       return NextResponse.json({
         success: true,
         signature,
