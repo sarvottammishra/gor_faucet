@@ -16,7 +16,7 @@ export default function Home() {
           <div className="flex flex-col items-center gap-6">
             <Faucet />
             <p className="font-inter text-xl text-gorb-text-secondary max-w-md">
-              You will receive 0.5 Testnet $GOR
+              You will receive 5 Testnet $GOR
             </p>
           </div>
         </div>
