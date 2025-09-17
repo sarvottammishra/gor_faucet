@@ -140,7 +140,7 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
         </p>
       </div>
 
-      {step === 'tweet' && (
+      <div className="space-y-6">
         <div className="space-y-4">
           <div className="bg-black/20 p-4 rounded-lg">
             <p className="font-inter text-sm text-gorb-text-primary mb-3">
@@ -164,9 +164,7 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
             🐦 Tweet to Claim
           </button>
         </div>
-      )}
 
-      {step === 'verify' && (
         <div className="space-y-4">
           <div className="text-center">
             <p className="font-inter text-sm text-gorb-text-secondary mb-3">
@@ -190,12 +188,6 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
 
           <div className="flex gap-3">
             <button
-              onClick={resetFlow}
-              className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-inter font-semibold py-2 px-4 rounded-lg transition-colors"
-            >
-              Back
-            </button>
-            <button
               onClick={handleVerifyTweet}
               disabled={isVerifying || !tweetUrl.trim()}
               className="flex-1 bg-gorb-accent-primary hover:bg-green-500 text-black font-inter font-semibold py-2 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -204,7 +196,7 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
             </button>
           </div>
         </div>
-      )}
+      </div>
 
       <div className="mt-6 text-center">
         <button
