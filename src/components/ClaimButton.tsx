@@ -121,7 +121,7 @@ export const ClaimButton: FC<ClaimButtonProps> = ({ connection, publicKey }) => 
       await checkEligibility() // Refresh eligibility after claiming
 
       // Show success message with Gorbagana branding
-      setSuccessMessage(`✅ Successfully claimed 0.5 GOR tokens on Gorbagana Testnet v1! TX: ${signature.substring(0, 8)}...\n🐦 Tweet verified: ${tweetUrl}`)
+      setSuccessMessage(`✅ Successfully claimed 5 GOR tokens on Gorbagana Testnet v1! TX: ${signature.substring(0, 8)}...\n🐦 Tweet verified: ${tweetUrl}`)
 
       // Clear success message after 15 seconds
       setTimeout(() => {
@@ -207,7 +207,7 @@ export const ClaimButton: FC<ClaimButtonProps> = ({ connection, publicKey }) => 
       {successMessage && txSignature && (
         <div className="text-center p-4 rounded-xl mt-4 bg-gorb-card-background border border-gorb-border">
           <div className="font-semibold text-gorb-text-primary mb-2">
-            ✅ Successfully claimed 0.5 GOR tokens on Gorbagana Testnet v1!
+            ✅ Successfully claimed 5 GOR tokens on Gorbagana Testnet v1!
           </div>
           <div className="text-sm text-gorb-text-secondary mb-2">
             TX:{' '}
