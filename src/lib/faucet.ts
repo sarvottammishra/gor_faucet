@@ -126,8 +126,8 @@ export async function fetchBlockchainTransactions(walletAddress: string, connect
             if (walletIndex !== -1 && preBalances && postBalances && walletIndex < postBalances.length && walletIndex < preBalances.length) {
               const balanceChange = postBalances[walletIndex] - preBalances[walletIndex]
 
-              // Check if this looks like a faucet claim (around 0.5 GOR = 500,000,000 lamports)
-              if (balanceChange > 400_000_000 && balanceChange < 600_000_000) {
+              // Check if this looks like a faucet claim (around 5 GOR = 5,000,000,000 lamports)
+              if (balanceChange > 4_000_000_000 && balanceChange < 6_000_000_000) {
                 transactions.push({
                   signature: sigInfo.signature,
                   timestamp: sigInfo.blockTime ? new Date(sigInfo.blockTime * 1000) : new Date(),
@@ -227,7 +227,7 @@ async function verifyTransactionOnChain(signature: string, connection: Connectio
 
 // Configuration
 const FAUCET_PRIVATE_KEY = process.env.NEXT_PUBLIC_FAUCET_PRIVATE_KEY || ''
-const CLAIM_AMOUNT = 500_000_000 // 0.5 GOR in lamports (matches admin/drop route)
+const CLAIM_AMOUNT = 5_000_000_000 // 5 GOR in lamports (matches admin/drop route)
 
 // Dynamic API URL detection for production
 const getApiBaseUrl = () => {
