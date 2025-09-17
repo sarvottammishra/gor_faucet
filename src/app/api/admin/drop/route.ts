@@ -7,7 +7,7 @@ import { verifyVerificationToken } from '@/lib/verificationToken'
 
 // Configuration - In production, these should be environment variables
 const FAUCET_PRIVATE_KEY = process.env.FAUCET_PRIVATE_KEY || ''
-const CLAIM_AMOUNT = 500_000_000 // 0.5 GOR in lamports
+const CLAIM_AMOUNT = 5_000_000_000 // 5 GOR in lamports
 const SOLANA_RPC_URL = process.env.SOLANA_RPC_URL || 'https://rpc.gorbagana.wtf'
 
 export async function POST(request: NextRequest) {
