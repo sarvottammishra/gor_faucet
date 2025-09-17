@@ -18,7 +18,6 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
   const [isVerifying, setIsVerifying] = useState(false)
   const [error, setError] = useState('')
   const [step, setStep] = useState<'tweet' | 'verify'>('tweet')
-  const [showEmbeddedTweet, setShowEmbeddedTweet] = useState(false)
 
   // Persist state to survive iOS return from Twitter
   useEffect(() => {
@@ -54,11 +53,8 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
   }
 
   const handleTweet = () => {
-    setShowEmbeddedTweet(true)
-  }
-
-  const handleTweetPosted = () => {
-    setShowEmbeddedTweet(false)
+    const twitterUrl = createTwitterIntent()
+    window.open(twitterUrl, '_blank', 'width=600,height=400')
     setStep('verify')
   }
 
@@ -161,71 +157,13 @@ export const TwitterVerification: FC<TwitterVerificationProps> = ({
             </div>
           </div>
 
-          <div className="space-y-2">
-            <button
-              onClick={handleTweet}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-inter font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:-translate-y-1"
-            >
-              🐦 Tweet to Claim (In App)
-            </button>
-            <button
-              onClick={() => {
-                const twitterUrl = createTwitterIntent()
-                window.open(twitterUrl, '_blank', 'width=600,height=400')
-                setStep('verify')
-              }}
-              className="w-full bg-gray-600 hover:bg-gray-700 text-white font-inter font-semibold py-2 px-6 rounded-lg transition-all duration-300"
-            >
-              Open Twitter App
-            </button>
-          </div>
+          <button
+            onClick={handleTweet}
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-inter font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:-translate-y-1"
+          >
+            🐦 Tweet to Claim
+          </button>
         </div>
-
-        {showEmbeddedTweet && (
-          <div className="space-y-4">
-            <div className="bg-black/20 p-4 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-inter text-sm text-gorb-text-primary">
-                  Post your tweet
-                </h4>
-                <button
-                  onClick={() => setShowEmbeddedTweet(false)}
-                  className="text-gorb-text-muted hover:text-gorb-text-primary transition-colors"
-                >
-                  ✕
-                </button>
-              </div>
-              
-              {/* Embedded Twitter Web Intent */}
-              <div className="bg-white rounded-lg overflow-hidden">
-                <iframe
-                  src={createTwitterIntent()}
-                  width="100%"
-                  height="400"
-                  frameBorder="0"
-                  scrolling="no"
-                  className="border-0"
-                  title="Twitter Tweet Composer"
-                />
-              </div>
-              
-              <div className="mt-3 flex gap-2">
-                <button
-                  onClick={handleTweetPosted}
-                  className="flex-1 bg-gorb-accent-primary hover:bg-green-500 text-black font-inter font-semibold py-2 px-4 rounded-lg transition-colors"
-                >
-                  I&apos;ve posted the tweet
-                </button>
-                <button
-                  onClick={() => setShowEmbeddedTweet(false)}
-                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-inter font-semibold py-2 px-4 rounded-lg transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         <div className="space-y-4">
           <div className="text-center">
